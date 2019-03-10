@@ -1,28 +1,44 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { connect } from 'react-redux';
+import { fetchArticles } from './actions';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import theme from './theme';
+import Header from './components/Header';
+import NewsList from './components/NewsList';
+import './App.css'
 
-class App extends Component {
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      data: []
+    }
+  }
+  componentDidMount() {
+    this.props.fetchArticles();
+  }
   render() {
+    const { articles } = this.props;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <CssBaseline>
+        <MuiThemeProvider theme={theme}>
+          <div>
+            <Header />
+            <NewsList data={articles}/>
+          </div>
+        </MuiThemeProvider>
+      </CssBaseline>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    articles: state.articles
+  }
+}
+
+export default connect(mapStateToProps, {
+  fetchArticles
+})(App);
