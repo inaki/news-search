@@ -6,6 +6,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import theme from './theme';
 import Header from './components/Header';
 import NewsList from './components/NewsList';
+import SideBar from './components/SideBar';
 import './App.css'
 
 class App extends React.Component {
@@ -26,6 +27,7 @@ class App extends React.Component {
           <div>
             <Header />
             <NewsList data={articles}/>
+            <SideBar />
           </div>
         </MuiThemeProvider>
       </CssBaseline>

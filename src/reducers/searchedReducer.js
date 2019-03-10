@@ -1,11 +1,11 @@
 import { 
-    FETCH_ARTICLES
+    SEARCH_ARTICLE_BY_INPUT
 } from '../actions/types';
 
 
-export default (state = [], action) => {
+export default (state = '', action) => {
     switch(action.type) {
-        case FETCH_ARTICLES:
+        case SEARCH_ARTICLE_BY_INPUT:
             return action.payload;
         default: 
             return state;

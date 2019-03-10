@@ -7,6 +7,9 @@ const palette = {
 }
 
 export default createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
     palette: {
         primary: {
           // light: palette.primary,

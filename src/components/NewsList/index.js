@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,30 +18,37 @@ const styles = {
       justifyContent: 'space-around'
   },
   card: {
-    maxWidth: 345,
-    margin: 20
+    maxWidth: '23%',
+    margin: '5px 10px',
+    height: '100%'
   },
   media: {
     height: 140,
   },
+  cardTitle: {
+      fontFamily: '"Lora", serif'
+  }
 };
 
 class NewsList extends React.Component {
 
     renderCards = (item) => {
         return (
-            <Card key={uniqid()} className={this.props.classes.card}>
+            <Card key={uniqid()} className={this.props.classes.card} raised={true}>
                 <CardActionArea>
-                    <CardMedia
-                    className={this.props.classes.media}
-                    image={item.urlToImage}
-                    title="Contemplative Reptile"
-                    />
+                    {
+                        item.urlToImage !== null && 
+                        <CardMedia
+                            className={this.props.classes.media}
+                            image={item.urlToImage}
+                            title="Contemplative Reptile"
+                            />
+                    }
                     <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h6" component="h2" className={this.props.classes.cardTitle}>
                         {item.title}
                     </Typography>
-                    <Typography component="p">
+                    <Typography component="h6">
                         {item.content}
                     </Typography>
                     </CardContent>
@@ -49,7 +57,7 @@ class NewsList extends React.Component {
                     <Button size="small" color="primary">
                     Share
                     </Button>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" href={item.url}>
                     Learn More
                     </Button>
                 </CardActions>
@@ -58,13 +66,25 @@ class NewsList extends React.Component {
     }
 
     render() {
-        const { data, classes } = this.props;
+        const { data, searched, classes } = this.props;
+        console.log(data)
         return (
             <div className={classes.container}>
-                {data.map(item => this.renderCards(item))}
+                {data
+                    .filter( item => {
+                        return (item.title.toLowerCase().indexOf(searched) !== -1);
+                    }).map(item => this.renderCards(item, searched))}
             </div>
         )
     }
 }
 
-export default withStyles(styles)(NewsList);
+const StyledNewsList = withStyles(styles)(NewsList);
+
+const mapStateToProps = state => {
+    return {
+        searched: state.searched
+    }
+}
+
+export default connect(mapStateToProps)(StyledNewsList);
