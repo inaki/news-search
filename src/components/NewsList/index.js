@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import uniqid from 'uniqid';
@@ -18,6 +17,7 @@ const styles = theme => ({
     },
     media: {
         height: 140,
+        width: '100%'
     },
     cardTitle: {
         fontFamily: '"Lora", serif'
@@ -25,19 +25,34 @@ const styles = theme => ({
 });
 
 class NewsList extends React.Component {
-
+    handleImageError = e => {
+        // handles image loading error from the apinews.org and default to news source brand image
+        e.target.onerror = null; 
+        if(this.props.newsData.source === 'wsj.com') {
+            return e.target.src="https://s.wsj.net/blogs/img/WSJ_Logo_BlackBackground_1200x630social";
+        } else if (this.props.newsData.source === 'nytimes.com') {
+            return e.target.src="https://static01.nyt.com/newsgraphics/images/icons/defaultPromoCrop.png";
+        } else if (this.props.newsData.source === 'bbc.com') {
+            return e.target.src="https://www.bbc.co.uk/news/special/2015/newsspec_10857/bbc_news_logo.png?cb=1";
+        } else if (this.props.newsData.source === 'cnn.com') {
+            return e.target.src="https://www.corporateleadersgroup.com/reports-evidence-and-insights/news-images/cnn-logo.tif/image_preview";
+        } else {
+            return e.target.src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwix9Iix5_rgAhUQKqwKHTHdCNcQjRx6BAgBEAU&url=https%3A%2F%2Fdoubletap.online%2Ftag%2Fnews&psig=AOvVaw1Qw6IXFRTRelup7ne00atT&ust=1552418406475124";
+        }
+    }
     renderCards = (item) => {
         return (
             <Card key={uniqid()} className={this.props.classes.card} raised={true}>
                 <div>
                     {
                         item.urlToImage !== null && 
-                        <CardMedia
+                        <img
                             className={this.props.classes.media}
-                            image={item.urlToImage}
+                            src={item.urlToImage}
                             aria-label="Article Photo"
-                            title="Contemplative Reptile"
-                            />
+                            alt={item.urlToImage}
+                            onError={ e => this.handleImageError(e) }
+                        />
                     }
                     <CardContent>
                         <Typography
@@ -69,7 +84,6 @@ class NewsList extends React.Component {
     render() {
         
         const { newsData, searched } = this.props;
-        console.log(newsData.articles[0])
         const articlesList = newsData.articles
             .filter( item => item.title.toLowerCase().indexOf(searched) !== -1)
             .map(item => {
