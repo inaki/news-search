@@ -5,17 +5,20 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const StyledLoading = styled.div`
     background: rgba(0,0,0,0.2);
     width: 100wv;
-    height: 100vh;
-    margin-top: -12px;
+    height: 90vh;
+    margin-top: -10px;
+`;
+
+const StyledCircularProgress = styled(CircularProgress)`
+    position: absolute;
+    top: 50%;
+    left: 47%; 
 `;
 
 const Loading = () => {
     return (
         <StyledLoading>
-            <CircularProgress
-                style={{position: 'absolute', top: '50%',left: '47%'}}
-                disableShrink
-                />
+            <StyledCircularProgress disableShrink/>
         </StyledLoading>
     );
 }

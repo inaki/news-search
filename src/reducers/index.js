@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
-import articlesReducer from './articlesReducer';
+import newsReducer from './newsReducer';
 import searchedReducer from './searchedReducer';
 import drawerReducer from './drawerReducer';
-import sortByReducer from './sortByReducer';
 
 export default combineReducers({
-    articles: articlesReducer,
+    newsData: newsReducer,
     searched: searchedReducer,
-    drawerOpen: drawerReducer,
-    sortBy: sortByReducer
+    drawerOpen: drawerReducer
 });

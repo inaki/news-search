@@ -8,27 +8,27 @@ import {
     SORT_ARTICLE_BY
 } from './types';
 
-// import uniqid from 'uniqid';
-const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+// News Api Secrete Key
+const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
 
-export const fetchArticles = () => {
+export const fetchArticles = (source) => {
     return async dispatch => {
-        const response = await articles.get(`/everything?pageSize=50&domains=wsj.com&language=en&apiKey=${API_KEY}`);
-        dispatch({type: FETCH_ARTICLES, payload: response.data.articles});
+        const response = await articles.get(`/everything?pageSize=100&domains=${source}&language=en&apiKey=${API_KEY}`);
+        dispatch({type: FETCH_ARTICLES, payload: {articles: response.data.articles, source}});
     };
 };
 
-export const fetchArticlesByJournal = (journal) => {
+export const fetchArticlesByJournal = (source) => {
     return async dispatch => {
-        const response = await articles.get(`/everything?pageSize=50&domains=${journal}&language=en&apiKey=${API_KEY}`);
-        dispatch({type: FETCH_ARTICLES, payload: response.data.articles});
+        const response = await articles.get(`/everything?pageSize=100&domains=${source}&language=en&apiKey=${API_KEY}`);
+        dispatch({type: FETCH_ARTICLES, payload: {articles: response.data.articles, source}});
     };
 };
 
-export const sortSelect = (sortBy) => {
+export const sortSelect = (sortBy, source) => {
     return async dispatch => {
-        const response = await articles.get(`everything?pageSize=50&domains=wsj.com&sortBy=${sortBy}&language=en&apiKey=${API_KEY}`);
-        dispatch({type: SORT_ARTICLE_BY, payload: response.data.articles});
+        const response = await articles.get(`everything?pageSize=100&domains=${source}&sortBy=${sortBy}&language=en&apiKey=${API_KEY}`);
+        dispatch({type: SORT_ARTICLE_BY, payload: {articles: response.data.articles, source}});
     };
 };
 

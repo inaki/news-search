@@ -11,21 +11,18 @@ import uniqid from 'uniqid';
 import Masonry from 'react-masonry-component';
 import EmptyState from '../EmptyState';
 
-const styles = {
-  container: {
-    width: '100wv'
-  },
-  card: {
-    margin: '5px 10px',
-    maxWidth: 300
-  },
-  media: {
-    height: 140,
-  },
-  cardTitle: {
-      fontFamily: '"Lora", serif'
-  }
-};
+const styles = theme => ({
+    card: {
+        margin: '5px 10px',
+        maxWidth: 300
+    },
+    media: {
+        height: 140,
+    },
+    cardTitle: {
+        fontFamily: '"Lora", serif'
+    }
+});
 
 class NewsList extends React.Component {
 
@@ -38,21 +35,31 @@ class NewsList extends React.Component {
                         <CardMedia
                             className={this.props.classes.media}
                             image={item.urlToImage}
+                            aria-label="Article Photo"
                             title="Contemplative Reptile"
                             />
                     }
                     <CardContent>
-                    <Typography gutterBottom variant="h6" component="h2" className={this.props.classes.cardTitle}>
-                        {item.title}
-                    </Typography>
-                    <Typography component="h6">
-                        {item.content}
-                    </Typography>
+                        <Typography
+                            gutterBottom variant="h6"
+                            component="h2"
+                            aria-label="Article Title"
+                            className={this.props.classes.cardTitle}
+                        >
+                            {item.title}
+                        </Typography>
+                        <Typography component="h6" aria-label="Article Content">
+                            {item.content}
+                        </Typography>
                     </CardContent>
                 </div>
                 <CardActions>
-                    <Button size="small" href={item.url} target="_blank">
-                    Learn More
+                    <Button
+                        size="small"
+                        href={item.url}
+                        target="_blank"
+                        aria-label="Link to Original Article">
+                        Learn More
                     </Button>
                 </CardActions>
             </Card>
@@ -61,12 +68,14 @@ class NewsList extends React.Component {
 
     render() {
         
-        const { data, searched, sorted } = this.props;
-        const articles = sorted.length ? sorted : data;
-        const articlesList = articles
+        const { newsData, searched } = this.props;
+        console.log(newsData.articles[0])
+        const articlesList = newsData.articles
             .filter( item => item.title.toLowerCase().indexOf(searched) !== -1)
-            .map(item => this.renderCards(item, searched));
-        console.log(articlesList)
+            .map(item => {
+                return this.renderCards(item, searched);
+            });
+        
         return (
         
             <React.Fragment>
@@ -83,6 +92,7 @@ const StyledNewsList = withStyles(styles)(NewsList);
 
 const mapStateToProps = state => {
     return {
+        newsData: state.newsData,
         searched: state.searched,
         sorted: state.sortBy
     }

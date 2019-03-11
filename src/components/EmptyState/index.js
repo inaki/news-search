@@ -1,10 +1,10 @@
+// EmptyState Component
 import React from 'react';
 import styled from 'styled-components';
 
 const StyledEmptyState = styled.div`
     width: 100wv;
     height: 100vh;
-    margin-top: -12px;
     font-size: 1.7rem;
     color: darkgray;
     text-align: center;

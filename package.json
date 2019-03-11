@@ -6,13 +6,14 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
-    "mdbreact": "^4.11.0",
+    "dotenv": "^6.2.0",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.10.0",
     "newsapi": "^2.4.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-masonry-component": "^6.2.1",
-    "react-masonry-infinite": "^1.2.2",
     "react-redux": "^6.0.1",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
@@ -35,6 +36,9 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "redux-thunk": "^2.3.0"
+    "chai": "^4.2.0",
+    "react-test-renderer": "^16.8.4",
+    "redux-thunk": "^2.3.0",
+    "sinon": "^7.2.7"
   }
 }

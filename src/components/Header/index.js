@@ -1,3 +1,4 @@
+// Header Component
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,30 +13,33 @@ import {
     Select,
     MenuItem,
 } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
-import MenuIcon from '@material-ui/icons/Menu';
+import {
+  Search as SearchIcon,
+  Menu as MenuIcon
+} from '@material-ui/icons';
+
 
 const styles = {
-  root: {
-    flexGrow: 1,
-    marginBottom: 75
-  },
-  brandName: {
-    flexGrow: 1,
-    fontFamily: '"Lora", serif'
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  selectInput: {
-    height: 30, 
-    width: 130
-  },
-  iconButton: {
-    position: 'absolute',
-    right: 0
-  }
+    root: {
+      flexGrow: 1,
+      marginBottom: 75
+    },
+    brandName: {
+      flexGrow: 1,
+      fontFamily: '"Lora", serif'
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20,
+    },
+    selectInput: {
+      height: 30, 
+      width: 130
+    },
+    iconButton: {
+      position: 'absolute',
+      right: 0
+    }
 };
 
 class Header extends React.Component {
@@ -43,7 +47,7 @@ class Header extends React.Component {
     super();
     this.state = {
       inputValue: '',
-      sortBy: 'none'
+      sortBy: 'sort'
     }
   }
 
@@ -54,7 +58,7 @@ class Header extends React.Component {
 
   handleSortBy = ({target}) => {
     this.setState({sortBy: target.value});
-    this.props.sortSelect(target.value);
+    this.props.sortSelect(target.value, this.props.newsData.source);
   }
 
   render() {
@@ -63,43 +67,49 @@ class Header extends React.Component {
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={openDrawer}>
+            <IconButton className={classes.menuButton} color="inherit" aria-label="News Source Menu" onClick={openDrawer}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.brandName}>
+            
+            <Typography variant="h6" color="inherit" className={classes.brandName} aria-label="Title">
               The News
             </Typography>
           
-              <TextField 
-                placeholder="Search for news"
-                id="standard-search"
-                type="search"
-                onChange={this.handleSearch}
-                value={this.state.inputValue}
-                InputProps={{
-                  style: {
-                    marginRight: 30,
-                    width: 200
-                  },
-                  endAdornment: <IconButton className={classes.iconButton} aria-label="Search">
-                   <SearchIcon />
+            <TextField 
+              aria-label="Search Field"
+              placeholder="Search for news"
+              id="news-search"
+              type="search"
+              onChange={this.handleSearch}
+              value={this.state.inputValue}
+              InputProps={{
+                style: {
+                  marginRight: 30,
+                  width: 200
+                },
+                endAdornment: (
+                  <IconButton className={classes.iconButton} aria-label="Search Button">
+                    <SearchIcon />
                   </IconButton>
-                }}
-              />
+                )
+              }}
+            />
   
-              <Select
-                value={this.state.sortBy}
-                onChange={this.handleSortBy}
-                className={classes.selectInput}
-              >
-                <MenuItem value="">
-                  <em>Sort Articles</em>
-                </MenuItem>
-                <MenuItem value='publishedAt'>Date</MenuItem>
-                <MenuItem value='relevancy'>Relevance</MenuItem>
-                <MenuItem value='popularity'>Popularity</MenuItem>
-                <MenuItem value='none'>None</MenuItem>
-              </Select>
+            <Select
+              value={this.state.sortBy}
+              onChange={this.handleSortBy}
+              className={classes.selectInput}
+              aria-label="Sort Select"
+            >
+              <MenuItem value="sort">
+                <em>Sort Articles</em>
+              </MenuItem>
+              <MenuItem value='publishedAt'>Date</MenuItem>
+              <MenuItem value='relevancy'>Relevance</MenuItem>
+              <MenuItem value='popularity'>Popularity</MenuItem>
+              <MenuItem value='none'>None</MenuItem>
+            </Select>
+
           </Toolbar>
         </AppBar>
       </div>
@@ -109,11 +119,18 @@ class Header extends React.Component {
 
 Header.propTypes = {
   classes: PropTypes.object.isRequired,
+  openDrawer: PropTypes.func
 };
 
 const StyledHeader = withStyles(styles)(Header);
 
-export default connect(null, {
+const mapStateToProps = state => {
+  return {
+    newsData: state.newsData
+  }
+}
+
+export default connect(mapStateToProps, {
   searchBeatByInput,
   openDrawer,
   sortSelect

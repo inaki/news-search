@@ -26,12 +26,14 @@ const news = [
 
 class SideBar extends React.Component {
   state = {
-    open: false
+    open: false,
+    activeLink: 'wsj.com'
   };
 
   toggleDrawer = (open) => () => {
     this.setState({
       open: open,
+      activeLink: 'wsj.com'
     });
   };
 
@@ -42,8 +44,11 @@ class SideBar extends React.Component {
       <div className={classes.list}>
         <List>
           {news.map( ({name, url}) => (
-            <ListItem button key={name}>
-              <ListItemText primary={name} onClick={() => fetchArticlesByJournal(url)}/>
+            <ListItem button key={name} selected={url === this.state.activeLink}>
+              <ListItemText primary={name} onClick={() => {
+                this.setState({activeLink: url});
+                fetchArticlesByJournal(url);
+              }}/>
             </ListItem>
           ))}
         </List>
@@ -51,7 +56,7 @@ class SideBar extends React.Component {
     );
 
     return (
-      <div>
+  
         <Drawer open={this.props.drawerOpen} onClose={this.props.collapseDrawer}>
           <div
             tabIndex={0}
@@ -62,7 +67,7 @@ class SideBar extends React.Component {
             {sideList}
           </div>
         </Drawer>
-      </div>
+
     );
   }
 }
@@ -75,7 +80,8 @@ const StyledSideBar = withStyles(styles)(SideBar);
 
 const mapStateToProps = state => {
   return {
-    drawerOpen: state.drawerOpen
+    drawerOpen: state.drawerOpen,
+    articles: state.articles
   }
 }
 
