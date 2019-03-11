@@ -11,8 +11,8 @@ import {
     TextField,
     Select,
     MenuItem,
-    Input
 } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
 
 const styles = {
@@ -20,21 +20,21 @@ const styles = {
     flexGrow: 1,
     marginBottom: 75
   },
-  grow: {
+  brandName: {
     flexGrow: 1,
+    fontFamily: '"Lora", serif'
   },
   menuButton: {
     marginLeft: -12,
     marginRight: 20,
   },
-  inputField: {
-    background: 'black',
-    color: 'white',
-    border: 'none',
-    borderBottom: '1px solid white',
+  selectInput: {
     height: 30, 
-    fontSize: '1rem',
-    outline: 'none' 
+    width: 130
+  },
+  iconButton: {
+    position: 'absolute',
+    right: 0
   }
 };
 
@@ -66,8 +66,8 @@ class Header extends React.Component {
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu" onClick={openDrawer}>
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              News
+            <Typography variant="h6" color="inherit" className={classes.brandName}>
+              The News
             </Typography>
           
               <TextField 
@@ -76,11 +76,21 @@ class Header extends React.Component {
                 type="search"
                 onChange={this.handleSearch}
                 value={this.state.inputValue}
-     
+                InputProps={{
+                  style: {
+                    marginRight: 30,
+                    width: 200
+                  },
+                  endAdornment: <IconButton className={classes.iconButton} aria-label="Search">
+                   <SearchIcon />
+                  </IconButton>
+                }}
               />
+  
               <Select
                 value={this.state.sortBy}
                 onChange={this.handleSortBy}
+                className={classes.selectInput}
               >
                 <MenuItem value="">
                   <em>Sort Articles</em>

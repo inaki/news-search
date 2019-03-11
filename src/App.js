@@ -7,13 +7,14 @@ import theme from './theme';
 import Header from './components/Header';
 import NewsList from './components/NewsList';
 import SideBar from './components/SideBar';
+import Loading from './components/Loading';
 import './App.css'
 
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      data: []
+      loading: null
     }
   }
   componentDidMount() {
@@ -28,6 +29,7 @@ class App extends React.Component {
             <Header />
             <SideBar />
             <NewsList data={articles}/>
+            { !articles.length && <Loading />}
           </div>
         </MuiThemeProvider>
       </CssBaseline>

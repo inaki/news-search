@@ -2,7 +2,6 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -10,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import uniqid from 'uniqid';
 import Masonry from 'react-masonry-component';
+import EmptyState from '../EmptyState';
 
 const styles = {
   container: {
@@ -61,17 +61,20 @@ class NewsList extends React.Component {
 
     render() {
         
-        const { data, searched, classes, sorted } = this.props;
-        const articles = sorted.length !==  0 ? sorted : data;
+        const { data, searched, sorted } = this.props;
+        const articles = sorted.length ? sorted : data;
+        const articlesList = articles
+            .filter( item => item.title.toLowerCase().indexOf(searched) !== -1)
+            .map(item => this.renderCards(item, searched));
+        console.log(articlesList)
         return (
-            <Masonry
-                className={'my-gallery-class'} // default ''
-            >
-                {articles
-                    .filter( item => {
-                        return (item.title.toLowerCase().indexOf(searched) !== -1);
-                    }).map(item => this.renderCards(item, searched))}
-            </Masonry>
+        
+            <React.Fragment>
+                { searched.length && !articlesList.length ? <EmptyState /> : null}
+                <Masonry className={'my-gallery-class'}>   
+                    {articlesList}
+                </Masonry>
+            </React.Fragment>
         )
     }
 }
