@@ -26,8 +26,8 @@ class App extends React.Component {
         <MuiThemeProvider theme={theme}>
           <div>
             <Header />
-            <NewsList data={articles}/>
             <SideBar />
+            <NewsList data={articles}/>
           </div>
         </MuiThemeProvider>
       </CssBaseline>

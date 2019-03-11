@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
 const palette = {
-    primary: '#000000',
+    primary: '#fff',
     secondary: '#cd5200',
     error: '#cc0000'
 }

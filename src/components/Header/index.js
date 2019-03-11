@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { searchBeatByInput, openDrawer } from '../../actions';
+import { searchBeatByInput, openDrawer, sortSelect } from '../../actions';
 import { withStyles } from '@material-ui/core/styles';
 import {
     IconButton,
     AppBar,
     Toolbar,
-    Typography
+    Typography,
+    TextField,
+    Select,
+    MenuItem,
+    Input
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 
@@ -38,7 +42,8 @@ class Header extends React.Component {
   constructor() {
     super();
     this.state = {
-      inputValue: ''
+      inputValue: '',
+      sortBy: 'none'
     }
   }
 
@@ -47,12 +52,11 @@ class Header extends React.Component {
     this.props.searchBeatByInput(target.value.toLowerCase());
   }
 
-  onKeyDownDelete = (event) => {
-    if (event.keyCode === 8) {
-      this.setState({inputValue: event.target.value});
-      this.props.searchBeatByInput(event.target.value.toLowerCase());
-    }
+  handleSortBy = ({target}) => {
+    this.setState({sortBy: target.value});
+    this.props.sortSelect(target.value);
   }
+
   render() {
     const { classes, openDrawer } = this.props;
     return (
@@ -65,16 +69,27 @@ class Header extends React.Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               News
             </Typography>
-            <input
-              placeholder="Search for news"
-              id="standard-search"
-              label="Search for News"
-              type="search"
-              onChange={this.handleSearch}
-              onKeyDown={this.onKeyDownDelete}
-              value={this.state.inputValue}
-              className={classes.inputField}
+          
+              <TextField 
+                placeholder="Search for news"
+                id="standard-search"
+                type="search"
+                onChange={this.handleSearch}
+                value={this.state.inputValue}
+     
               />
+              <Select
+                value={this.state.sortBy}
+                onChange={this.handleSortBy}
+              >
+                <MenuItem value="">
+                  <em>Sort Articles</em>
+                </MenuItem>
+                <MenuItem value='publishedAt'>Date</MenuItem>
+                <MenuItem value='relevancy'>Relevance</MenuItem>
+                <MenuItem value='popularity'>Popularity</MenuItem>
+                <MenuItem value='none'>None</MenuItem>
+              </Select>
           </Toolbar>
         </AppBar>
       </div>
@@ -86,9 +101,10 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const StyledHeader = withStyles(styles)(Header)
+const StyledHeader = withStyles(styles)(Header);
 
 export default connect(null, {
   searchBeatByInput,
-  openDrawer
+  openDrawer,
+  sortSelect
 })(StyledHeader);

@@ -9,18 +9,15 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import uniqid from 'uniqid';
+import Masonry from 'react-masonry-component';
 
 const styles = {
   container: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      width: '100vw',
-      justifyContent: 'space-around'
+    width: '100wv'
   },
   card: {
-    maxWidth: '23%',
     margin: '5px 10px',
-    height: '100%'
+    maxWidth: 300
   },
   media: {
     height: 140,
@@ -35,7 +32,7 @@ class NewsList extends React.Component {
     renderCards = (item) => {
         return (
             <Card key={uniqid()} className={this.props.classes.card} raised={true}>
-                <CardActionArea>
+                <div>
                     {
                         item.urlToImage !== null && 
                         <CardMedia
@@ -52,12 +49,9 @@ class NewsList extends React.Component {
                         {item.content}
                     </Typography>
                     </CardContent>
-                </CardActionArea>
+                </div>
                 <CardActions>
-                    <Button size="small" color="primary">
-                    Share
-                    </Button>
-                    <Button size="small" color="primary" href={item.url}>
+                    <Button size="small" href={item.url} target="_blank">
                     Learn More
                     </Button>
                 </CardActions>
@@ -66,15 +60,18 @@ class NewsList extends React.Component {
     }
 
     render() {
-        const { data, searched, classes } = this.props;
-        console.log(data)
+        
+        const { data, searched, classes, sorted } = this.props;
+        const articles = sorted.length !==  0 ? sorted : data;
         return (
-            <div className={classes.container}>
-                {data
+            <Masonry
+                className={'my-gallery-class'} // default ''
+            >
+                {articles
                     .filter( item => {
                         return (item.title.toLowerCase().indexOf(searched) !== -1);
                     }).map(item => this.renderCards(item, searched))}
-            </div>
+            </Masonry>
         )
     }
 }
@@ -83,7 +80,8 @@ const StyledNewsList = withStyles(styles)(NewsList);
 
 const mapStateToProps = state => {
     return {
-        searched: state.searched
+        searched: state.searched,
+        sorted: state.sortBy
     }
 }
 

@@ -3,14 +3,10 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import { connect } from 'react-redux';
-import { collapseDrawer } from '../../actions';
+import { collapseDrawer, fetchArticlesByJournal } from '../../actions';
 
 const styles = {
   list: {
@@ -20,6 +16,13 @@ const styles = {
     width: 'auto',
   },
 };
+
+const news = [
+  {name: 'The New York Times', url: 'nytimes.com'},
+  {name: 'Wall Street Journal', url: 'wsj.com'},
+  {name: 'BBC', url: 'bbc.com'},
+  {name: 'CNN', url: 'cnn.com'}
+];
 
 class SideBar extends React.Component {
   state = {
@@ -33,26 +36,17 @@ class SideBar extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, fetchArticlesByJournal } = this.props;
 
     const sideList = (
       <div className={classes.list}>
         <List>
-          {['Wall Street Journal', 'The New York Times', 'BBC', 'The Washington Post'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemText primary={text} />
+          {news.map( ({name, url}) => (
+            <ListItem button key={name}>
+              <ListItemText primary={name} onClick={() => fetchArticlesByJournal(url)}/>
             </ListItem>
           ))}
         </List>
-        {/* <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List> */}
       </div>
     );
 
@@ -86,5 +80,6 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps, {
-  collapseDrawer
+  collapseDrawer,
+  fetchArticlesByJournal
 })(StyledSideBar);
