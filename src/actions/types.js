@@ -1,3 +1,4 @@
+// Action types variables
 export const FETCH_ARTICLES = 'FETCH_ARTICLES';
 export const SEARCH_ARTICLE_BY_INPUT = 'SEARCH_ARTICLE_BY_INPUT';
 export const OPEN_DRAWER = 'OPEN_DRAWER';

@@ -8,23 +8,20 @@ const palette = {
 
 export default createMuiTheme({
     typography: {
-      useNextVariants: true,
+        useNextVariants: true,
+        fontFamily: [
+        '"Lora", serif',
+        ]
     },
     palette: {
         primary: {
-          // light: palette.primary,
-          main: palette.primary,
-          // dark: palette.primary
+            main: palette.primary,
         },
         secondary: {
-          // light: palette.secondary,
-          main: palette.secondary,
-          // dark: palette.secondary
+            main: palette.secondary,
         },
         error: {
-          // light: palette.error,
-          main: palette.error,
-          // dark: palette.error
+            main: palette.error,
         },
     }
 });

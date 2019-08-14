@@ -1,4 +1,6 @@
+// NewsList Component
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import Card from '@material-ui/core/Card';
@@ -9,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import uniqid from 'uniqid';
 import Masonry from 'react-masonry-component';
 import EmptyState from '../EmptyState';
+import { generateDefaultImage } from '../../utils';
 
 const styles = theme => ({
     card: {
@@ -20,7 +23,8 @@ const styles = theme => ({
         width: '100%'
     },
     cardTitle: {
-        fontFamily: '"Lora", serif'
+        fontSize: '1.1rem',
+        fontWeight: 'bold'
     }
 });
 
@@ -28,17 +32,7 @@ class NewsList extends React.Component {
     handleImageError = e => {
         // handles image loading error from the apinews.org and default to news source brand image
         e.target.onerror = null; 
-        if(this.props.newsData.source === 'wsj.com') {
-            return e.target.src="https://s.wsj.net/blogs/img/WSJ_Logo_BlackBackground_1200x630social";
-        } else if (this.props.newsData.source === 'nytimes.com') {
-            return e.target.src="https://static01.nyt.com/newsgraphics/images/icons/defaultPromoCrop.png";
-        } else if (this.props.newsData.source === 'bbc.com') {
-            return e.target.src="https://www.bbc.co.uk/news/special/2015/newsspec_10857/bbc_news_logo.png?cb=1";
-        } else if (this.props.newsData.source === 'cnn.com') {
-            return e.target.src="https://www.corporateleadersgroup.com/reports-evidence-and-insights/news-images/cnn-logo.tif/image_preview";
-        } else {
-            return e.target.src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwix9Iix5_rgAhUQKqwKHTHdCNcQjRx6BAgBEAU&url=https%3A%2F%2Fdoubletap.online%2Ftag%2Fnews&psig=AOvVaw1Qw6IXFRTRelup7ne00atT&ust=1552418406475124";
-        }
+        e.target.src = generateDefaultImage(this.props.newsData.source);
     }
     renderCards = (item) => {
         return (
@@ -47,7 +41,7 @@ class NewsList extends React.Component {
                     {
                         item.urlToImage !== null && 
                         <img
-                            className={this.props.classes.media}
+                            className={[this.props.classes.media, 'card-img'].join(' ')}
                             src={item.urlToImage}
                             aria-label="Article Photo"
                             alt={item.urlToImage}
@@ -63,7 +57,10 @@ class NewsList extends React.Component {
                         >
                             {item.title}
                         </Typography>
-                        <Typography component="h6" aria-label="Article Content">
+                        <Typography
+                            component="h6"
+                            aria-label="Article Content"
+                        >
                             {item.content}
                         </Typography>
                     </CardContent>
@@ -94,7 +91,8 @@ class NewsList extends React.Component {
         
             <React.Fragment>
                 { searched.length && !articlesList.length ? <EmptyState /> : null}
-                <Masonry className={'my-gallery-class'}>   
+                {/* this Masonry is been mount either way */}
+                <Masonry>   
                     {articlesList}
                 </Masonry>
             </React.Fragment>
@@ -102,13 +100,18 @@ class NewsList extends React.Component {
     }
 }
 
+NewsList.propTypes = {
+    classes: PropTypes.object.isRequired,
+    newsData: PropTypes.object,
+    searched: PropTypes.string
+};
+
 const StyledNewsList = withStyles(styles)(NewsList);
 
 const mapStateToProps = state => {
     return {
         newsData: state.newsData,
-        searched: state.searched,
-        sorted: state.sortBy
+        searched: state.searched
     }
 }
 

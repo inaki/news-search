@@ -9,7 +9,7 @@ import NewsList from './components/NewsList';
 import SideBar from './components/SideBar';
 import Loading from './components/Loading';
 
-class App extends React.Component {
+export class App extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -27,7 +27,7 @@ class App extends React.Component {
         return (
             <CssBaseline>
                 <MuiThemeProvider theme={theme}>
-                <div>
+                <div className='app-content'>
                     <Header />
                     <SideBar />
                     <NewsList />
@@ -38,6 +38,11 @@ class App extends React.Component {
             );
         }
     }
+
+App.defaultProps = {
+    newsData: { articles: []},
+    fetchArticles: () => {}
+}
 
 const mapStateToProps = state => {
     return {

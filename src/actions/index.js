@@ -8,9 +8,10 @@ import {
     SORT_ARTICLE_BY
 } from './types';
 
-// News Api Secrete Key
+// News Api Secret Key
 const API_KEY = process.env.REACT_APP_NEWS_API_KEY;
 
+// fetch articles for the first time from componentDidMount() return and object {}
 export const fetchArticles = (source) => {
     return async dispatch => {
         const response = await articles.get(`/everything?pageSize=100&domains=${source}&language=en&apiKey=${API_KEY}`);
@@ -18,6 +19,7 @@ export const fetchArticles = (source) => {
     };
 };
 
+// fetch articles by news source and update state return and object {}
 export const fetchArticlesByJournal = (source) => {
     return async dispatch => {
         const response = await articles.get(`/everything?pageSize=100&domains=${source}&language=en&apiKey=${API_KEY}`);
@@ -25,6 +27,7 @@ export const fetchArticlesByJournal = (source) => {
     };
 };
 
+// fetch articles by news source and sort feature return and object {}
 export const sortSelect = (sortBy, source) => {
     return async dispatch => {
         const response = await articles.get(`everything?pageSize=100&domains=${source}&sortBy=${sortBy}&language=en&apiKey=${API_KEY}`);
@@ -32,6 +35,7 @@ export const sortSelect = (sortBy, source) => {
     };
 };
 
+// handle update of input on search, return a string ''
 export const searchBeatByInput = (inputValue) => {
     return {
         type: SEARCH_ARTICLE_BY_INPUT,
@@ -39,6 +43,7 @@ export const searchBeatByInput = (inputValue) => {
     };
 };
 
+// action to open the sidebar return a bool
 export const openDrawer = () => {
     return {
         type: OPEN_DRAWER,
@@ -46,10 +51,12 @@ export const openDrawer = () => {
     };
 };
 
+// action to close the sidebar return a bool
 export const collapseDrawer = () => {
     return {
         type: COLLAPSE_DRAWER,
         payload: false
     };
 };
+
 

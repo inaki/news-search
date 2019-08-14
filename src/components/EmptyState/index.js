@@ -11,10 +11,10 @@ const StyledEmptyState = styled.div`
     margin-top: 20%;
 `;
 
-const EmptyState = () => {
+const EmptyState = ({text = 'No Results...'}) => {
     return (
         <StyledEmptyState>
-            No Results...
+            {text}
         </StyledEmptyState>
     );
 }

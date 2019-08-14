@@ -1,3 +1,4 @@
+// Loading Component
 import React from 'react';
 import styled from 'styled-components';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -17,7 +18,7 @@ const StyledCircularProgress = styled(CircularProgress)`
 
 const Loading = () => {
     return (
-        <StyledLoading>
+        <StyledLoading className='laoding-component'>
             <StyledCircularProgress disableShrink/>
         </StyledLoading>
     );
