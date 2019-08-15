@@ -8,6 +8,7 @@ import Header from './components/Header';
 import NewsList from './components/NewsList';
 import SideBar from './components/SideBar';
 import Loading from './components/Loading';
+import "./App.css"
 
 export class App extends React.Component {
     constructor() {
